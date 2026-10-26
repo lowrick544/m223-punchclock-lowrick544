@@ -9,6 +9,11 @@ import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.DELETE;
+import jakarta.ws.rs.PUT;
+import jakarta.ws.rs.PathParam;
+import jakarta.ws.rs.NotFoundException;
+import jakarta.ws.rs.core.Response;
 
 import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
@@ -38,4 +43,34 @@ public class EntryController {
        return entryService.createEntry(entry);
     }
 
+    @DELETE
+    @Path("/{id}")
+    public Response delete(@PathParam("id") Long id) {
+        boolean deleted = entryService.deleteEntry(id);
+
+        if (!deleted){
+            throw new NotFoundException("Entry not Found!");
+        }
+
+    return Response.noContent().build();
+    }
+
+    @PUT 
+    @Path("/{id}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Entry update(
+        @PathParam("id") Long id,
+        Entry updatedEntry) {
+
+        Entry entry = entryService.updateEntry(id, updatedEntry);
+
+        if (entry == null){
+            throw new NotFoundException("Entry not Found");
+        }
+
+        return entry;
+
+        }
 }
+
