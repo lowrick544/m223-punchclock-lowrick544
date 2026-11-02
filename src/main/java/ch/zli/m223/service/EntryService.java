@@ -15,7 +15,7 @@ public class EntryService {
     private EntryRepository entryRepository;
 
     @Transactional
-    public Entry createEntry(Entry entry) {
+    public Entry createEntry(Entry entry, Long categoryId, List<Long> tagIds) {
         entryRepository.persist(entry);
         return entry;
     }
@@ -30,7 +30,7 @@ public class EntryService {
     }
 
     @Transactional
-    public Entry updateEntry(Long id, Entry updatedEntry){
+    public Entry updateEntry(Long id, Entry updatedEntry, Long categoryId, List<Long> tagIds){
         Entry existingEntry = entryRepository.findById(id);
 
         if (existingEntry == null){
