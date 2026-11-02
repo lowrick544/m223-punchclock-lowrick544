@@ -15,7 +15,9 @@ import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.NotFoundException;
 import jakarta.ws.rs.core.Response;
-
+import io.quarkus.security.identity.SecurityIdentity;
+import jakarta.annotation.security.PermitAll;
+import io.quarkus.security.identity.SecurityIdentity;
 
 import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
@@ -31,6 +33,8 @@ public class EntryController {
 
     @Inject
     EntryService entryService;
+    @Inject
+    SecurityIdentity identity;
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -42,6 +46,7 @@ public class EntryController {
 
 
     @POST
+    @PermitAll
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public EntryResponseDto create(EntryRequestDto dto) {
@@ -51,10 +56,14 @@ public class EntryController {
     Entry entry = new Entry();
     entry.setCheckIn(dto.checkIn);
     entry.setCheckOut(dto.checkOut);
-    
-    Entry created = entryService.createEntry(
-    entry, dto.categoryId, dto.tagIds
-);
+
+    String username = null;
+
+    if (!identity.isAnonymous()){
+        username = identity.getPrincipal().getName();
+    }
+
+    Entry created = entryService.createEntry(entry, dto.categoryId, dto.tagIds, username);
 
     return EntryResponseDto.fromEntity(created);
     }

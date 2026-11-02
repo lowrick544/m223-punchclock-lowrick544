@@ -7,6 +7,7 @@ public class EntryResponseDto {
     public Long id;
     public LocalDateTime checkIn;
     public LocalDateTime checkOut;
+    public String username;
 
 
     public static EntryResponseDto fromEntity(Entry entry){
@@ -15,6 +16,10 @@ public class EntryResponseDto {
         dto.id = entry.getId();
         dto.checkIn = entry.getCheckIn();
         dto.checkOut = entry.getCheckOut();
+
+        dto.username = entry.getApplicationUser() != null
+        ? entry.getApplicationUser().getUsername()
+        : null;
 
         return dto;
     }
