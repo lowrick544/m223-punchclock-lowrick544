@@ -8,14 +8,20 @@ import jakarta.transaction.Transactional;
 
 import ch.zli.m223.model.Entry;
 import ch.zli.m223.repository.EntryRepository;
+import io.quarkus.security.identity.SecurityIdentity;
 
 @ApplicationScoped  
 public class EntryService {
     @Inject
     private EntryRepository entryRepository;
+    @Inject
+    EntryService entryService;
+
+    @Inject
+    SecurityIdentity identity;
 
     @Transactional
-    public Entry createEntry(Entry entry, Long categoryId, List<Long> tagIds) {
+    public Entry createEntry(Entry entry, Long categoryId, List<Long> tagIds, String username) {
         entryRepository.persist(entry);
         return entry;
     }

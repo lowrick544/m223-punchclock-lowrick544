@@ -5,7 +5,6 @@ import jakarta.persistence.*;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 
 import java.time.LocalDateTime;
-
 import java.util.Set;
 import java.util.HashSet;
 
@@ -46,6 +45,11 @@ public class Entry {
     this.checkOut = checkOut;
   }
 
+
+  @ManyToOne
+  @JoinColumn(name = "application_user_id")
+  private ApplicationUser applicationUser;
+ 
   @ManyToOne
   @JoinColumn(name = "category_id")
   private Category category;
@@ -71,6 +75,14 @@ public class Entry {
 
   public void setTags(Set<Tag> tags) {
     this.tags = tags;
+}
+
+  public ApplicationUser getApplicationUser() {
+    return applicationUser;
+}
+
+  public void setApplicationUser(ApplicationUser applicationUser) {
+    this.applicationUser = applicationUser;
 }
 
 }
