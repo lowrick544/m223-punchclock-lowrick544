@@ -9,7 +9,7 @@ import jakarta.transaction.Transactional;
 import ch.zli.m223.model.Entry;
 import ch.zli.m223.repository.EntryRepository;
 
-@ApplicationScoped
+@ApplicationScoped  
 public class EntryService {
     @Inject
     private EntryRepository entryRepository;

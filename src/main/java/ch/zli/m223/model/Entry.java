@@ -55,6 +55,8 @@ public class Entry {
   joinColumns = @JoinColumn(name = "entry_id"),
   inverseJoinColumns = @JoinColumn(name = "tag_id"))
   private Set<Tag> tags = new HashSet<>();
+  
+  
   public Category getCategory() {
     return category;
 }
