@@ -51,8 +51,10 @@ public class EntryController {
     Entry entry = new Entry();
     entry.setCheckIn(dto.checkIn);
     entry.setCheckOut(dto.checkOut);
-
-    Entry created = entryService.createEntry(entry);
+    
+    Entry created = entryService.createEntry(
+    entry, dto.categoryId, dto.tagIds
+);
 
     return EntryResponseDto.fromEntity(created);
     }
@@ -83,7 +85,9 @@ public class EntryController {
     entry.setCheckIn(dto.checkIn);
     entry.setCheckOut(dto.checkOut);
 
-    Entry updated = entryService.updateEntry(id, entry);
+    Entry updated = entryService.updateEntry(
+    id, entry, dto.categoryId, dto.tagIds
+);
 
     if (updated == null) {
         throw new NotFoundException("Entry not found");
